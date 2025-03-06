@@ -4,7 +4,8 @@ import { View, Text } from "react-native";
 import { DrawerBtn } from "@/components/ui/drawerOpnBtn";
 import SearchBar from "@/components/ui/searchBar";
 import AvatarIcon from "@/components/ui/avatar";
-import Category from "@/components/ui/categoryCard";
+import Category from "@/components/ui/categoryCard.old1";
+import Recent from "@/components/ui/recent";
 export default function homePage() {
   return (
     <SafeAreaProvider>
@@ -47,6 +48,10 @@ export default function homePage() {
         <View style={{ gap: 8, flexDirection: "column" }}>
           <Text style={styles.header}>Categories</Text>
           <Category />
+        </View>
+        <View style={{ gap: 8, flexDirection: "column" }}>
+          <Text style={styles.header}>Recently added</Text>
+          <Recent />
         </View>
       </SafeAreaView>
     </SafeAreaProvider>

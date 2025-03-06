@@ -1,150 +1,184 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   View,
   StyleSheet,
   Text,
   TouchableOpacity,
   ActivityIndicator,
-  FlatList,
+  ScrollView,
 } from "react-native";
 
-interface CartItem {
-  id: number;
-  userId: number;
-  products: Array<{
-    id: number;
-    title: string;
-    price: number;
-    quantity: number;
-    total: number;
-    discountedTotal: number;
-  }>;
-  total: number;
-  discountedTotal: number;
-  totalProducts: number;
-  totalQuantity: number;
+// Types
+interface Apartment {
+  id: string;
+  title: string;
+  locationId: string;
+  price: number;
+  beds: number;
+  baths: number;
+  sqft: number;
+  description: string;
+  amenities: string[];
+  images: Array<{ url: string }>;
+}
+
+interface LocationData {
+  id: string;
+  name: string;
+  apartments: Apartment[];
 }
 
 interface CategoryProps {
-  onCartPress?: (cart: CartItem) => void;
+  onApartmentPress?: (apartment: Apartment) => void;
 }
 
-const Category = ({ onCartPress = () => {} }: CategoryProps) => {
-  const [carts, setCarts] = useState<CartItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+const Category = ({ onApartmentPress = () => {} }: CategoryProps) => {
+  const [locations, setLocations] = React.useState<LocationData[]>([]);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("https://dummyjson.com/carts");
+        console.log("1. Starting API call");
+        const response = await fetch(
+          "https://dummyjson.com/c/ca8f-756c-40af-b116",
+        );
+        console.log("2. Response received");
+        console.log("Response status:", response.status);
+        console.log("Response ok:", response.ok);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
+        console.log("3. Parsing response");
         const data = await response.json();
-        setCarts(data.carts);
-        console.log({ response });
+        console.log("4. Data received:", data);
+        if (!data || !data.locations) {
+          console.log("5. Data structure error: Invalid response format");
+          throw new Error("Invalid response format");
+        }
+        console.log("6. Setting locations");
+        console.log("Number of locations:", data.locations.length);
+        console.log("First location details:", data.locations[0]);
+        setLocations(data.locations);
       } catch (err) {
+        console.log(
+          "Error:",
+          err instanceof Error ? err.message : "Unknown error",
+        );
         setError(err instanceof Error ? err.message : "Failed to fetch data");
       } finally {
+        console.log("7. Setting loading to false");
         setLoading(false);
       }
     };
-
     fetchData();
   }, []);
 
   if (loading) {
+    console.log("8. Loading state - locations length:", locations.length);
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#000" />
+        <Text style={styles.cartTitle}>Loading...</Text>
+        <Text style={styles.debugInfo}>Debug State: Loading</Text>
       </View>
     );
   }
 
   if (error) {
+    console.log("9. Error state - locations length:", locations.length);
     return (
       <View style={styles.errorContainer}>
         <Text style={styles.errorText}>{error}</Text>
+        <Text style={styles.debugInfo}>Debug State: Error</Text>
       </View>
     );
   }
 
+  console.log("10. Normal state - locations length:", locations.length);
+  if (locations.length === 0) {
+    console.log("11. No locations found");
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>
+          No locations found. Check API response format.
+        </Text>
+        <Text style={styles.debugInfo}>Debug State: Empty</Text>
+      </View>
+    );
+  }
+
+  console.log("12. Rendering ScrollView with locations:", locations);
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={carts}
-        keyExtractor={(item) => `cart-${item.id}`}
-        renderItem={({ item }) => (
+    <View style={styles.container } >
+      <ScrollView style={styles.listContainer}>
+        {locations.map((location) => (
           <TouchableOpacity
+            key={location.id}
             style={styles.cartCard}
-            onPress={() => onCartPress(item)}
+            onPress={() => onApartmentPress(location.apartments[0])}
           >
             <View style={styles.cartHeader}>
-              <Text style={styles.cartTitle}>Cart #{item.id}</Text>
-              <Text style={styles.cartUser}>User ID: {item.userId}</Text>
+              <Text style={styles.cartTitle}>{location.name}</Text>
+              <Text style={styles.cartUser}>
+                {location.apartments.length} Apartments Available
+              </Text>
             </View>
-
             <View style={styles.cartContent}>
-              <Text style={styles.cartInfo}>
-                Total Items: {item.totalProducts}
-              </Text>
-              <Text style={styles.cartInfo}>
-                Total Quantity: {item.totalQuantity}
-              </Text>
+              <Text style={styles.cartInfo}>Location: {location.name}</Text>
               <Text style={styles.cartTotal}>
-                Total: ${item.total.toFixed(8)}
-              </Text>
-              <Text style={styles.cartDiscountedTotal}>
-                Discounted Total: ${item.discountedTotal.toFixed(2)}
+                Starting Price: ${location.apartments[0].price}
               </Text>
             </View>
-
             <View style={styles.cartProducts}>
-              {item.products.map((product, index) => (
+              {location.apartments.map((apartment, index) => (
                 <View key={index} style={styles.productItem}>
-                  <Text style={styles.productTitle}>{product.title}</Text>
+                  <Text style={styles.productTitle}>{apartment.title}</Text>
                   <Text style={styles.productPrice}>
-                    ${product.price.toFixed(8)} x {product.quantity}
+                    ${apartment.price} • {apartment.beds} beds •
+                    {apartment.baths} baths • {apartment.sqft} sqft
                   </Text>
                   <Text style={styles.productTotal}>
-                    Total: ${product.total.toFixed(2)}
+                    Amenities: {apartment.amenities.join(", ")}
                   </Text>
                 </View>
               ))}
             </View>
           </TouchableOpacity>
-        )}
-        contentContainerStyle={styles.listContainer}
-      />
+        ))}
+      </ScrollView>
+      <Text style={styles.debugInfo}>Debug State: Normal</Text>
     </View>
+
   );
 };
 
+// Styles
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "#fff",
     padding: 16,
+    overflow: 'scroll',
   },
   loadingContainer: {
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#ffcccc",
   },
   errorContainer: {
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
+    backgroundColor: "#ff0000",
   },
   errorText: {
-    color: "#ff0000",
+    color: "#fff",
     fontSize: 16,
     textAlign: "center",
   },
   cartCard: {
-    backgroundColor: "#fff",
+    backgroundColor: "#e0e0e0",
     borderRadius: 8,
     elevation: 2,
     shadowColor: "#000",
@@ -167,7 +201,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 4,
-    color: "#333",
+    color: "#000",
   },
   cartUser: {
     fontSize: 14,
@@ -190,17 +224,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 4,
   },
-  cartDiscountedTotal: {
-    fontSize: 16,
-    color: "#e74c3c",
-    fontWeight: "bold",
-  },
   cartProducts: {
     marginTop: 12,
   },
   productItem: {
     padding: 8,
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#fff",
     borderRadius: 4,
     marginBottom: 8,
   },
@@ -208,7 +237,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
     marginBottom: 4,
-    color: "#333",
+    color: "#000",
   },
   productPrice: {
     fontSize: 14,
@@ -221,7 +250,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   listContainer: {
-    padding: 16,
+    flexDirection: 'row',
+  overflow: 'scroll'
+  },
+  debugInfo: {
+    marginTop: 8,
+    fontSize: 12,
+    color: "#666",
+    fontStyle: "italic",
   },
 });
 
