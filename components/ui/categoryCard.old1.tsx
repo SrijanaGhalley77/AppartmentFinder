@@ -8,6 +8,7 @@ import {
   FlatList,
   ImageBackground,
   ScrollView,
+  Pressable,
 } from "react-native";
 import { Card } from "react-native-paper";
 
@@ -21,9 +22,7 @@ interface Apartment {
   sqft: number;
   description: string;
   amenities: string[];
-  images: Array<{
-    url: string;
-  }>;
+  images: Array<{ url: string }>;
 }
 
 interface LocationData {
@@ -74,8 +73,8 @@ const Category = ({ onApartmentPress = () => {} }: CategoryProps) => {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#000" />
         <Text style={styles.cartTitle}>Loading...</Text>
+        <ActivityIndicator size="large" color="#b2d8d8" />
       </View>
     );
   }
@@ -83,7 +82,7 @@ const Category = ({ onApartmentPress = () => {} }: CategoryProps) => {
   if (error) {
     return (
       <View style={styles.errorContainer}>
-        <Text style={styles.errorText}>{error}</Text>
+        <Text style={styles.errorText}>{error} there is error</Text>
       </View>
     );
   }
@@ -99,52 +98,29 @@ const Category = ({ onApartmentPress = () => {} }: CategoryProps) => {
   }
 
   return (
-    // <View style={styles.container}>
-    //   <FlatList
-    //     style={{flexDirection: 'row', gap: 12, borderRadius: 8}}
-    //     data={locations}
-    //     keyExtractor={(item) => `location-${item.id}`}
-    //     renderItem={({ item }) => {
-    //       return (
-    //         <TouchableOpacity
-    //           style={styles.cartCard}
-    //           onPress={() => onApartmentPress(item.apartments[0])}
-    //         >
-    //           <ImageBackground
-    //             source={require("@/assets/images/bangkok.webp")}
-    //             style={styles.cartHeader}
-    //           >
-    //             <Text style={styles.cartTitle}>{item.name}</Text>
-    //             <Text style={styles.cartUser}>
-    //               {item.apartments.length} Apartments Available
-    //             </Text>
-    //           </ImageBackground>
-    //         </TouchableOpacity>
-    //       );
-    //     }}
-    //     contentContainerStyle={styles.listContainer}
-    //   />
-    // </View>
-    <View>
-      <ScrollView horizontal contentContainerStyle={{gap: 12, paddingHorizontal: 12}}>
+    <View style={styles.container}>
+      <ScrollView
+        horizontal
+        nestedScrollEnabled
+        contentContainerStyle={{ gap: 16, paddingHorizontal: 12 }}
+      >
         {locations.map((item) => (
-          <Card key={item.id} style={styles.cartCard}>
-            <TouchableOpacity
-              onPress={() => onApartmentPress(item.apartments[1])}
-            >
+          <Pressable onPress={() => onApartmentPress(item.apartments[1])}>
+            <Card key={item.id} style={styles.cartCard}>
               <ImageBackground
                 source={{
                   uri: item.apartments[1].images[1]?.url || "default-image-uri",
                 }}
-                style={styles.cartHeader}
+                style={styles.cartBg}
+                imageStyle={styles.imageStyle}
               >
                 <Text style={styles.cartTitle}>{item.name}</Text>
                 <Text style={styles.cartUser}>
                   {item.apartments.length} Apartments Available
                 </Text>
               </ImageBackground>
-            </TouchableOpacity>
-          </Card>
+            </Card>
+          </Pressable>
         ))}
       </ScrollView>
     </View>
@@ -154,62 +130,50 @@ const Category = ({ onApartmentPress = () => {} }: CategoryProps) => {
 // Simplified styles with debugging colors
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    backgroundColor: "#fff",
-    paddingHorizontal: 16,
+    padding: 16,
     overflowX: "scroll",
   },
   loadingContainer: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#ffcccc", // Red background for loading state
+    backgroundColor: "#f9feff", // background for loading state
   },
   errorContainer: {
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
-    backgroundColor: "#ff0000", // Red background for error state
+    backgroundColor: "#ffbaba", //  background for error state
   },
   errorText: {
-    color: "#fff",
+    color: "#ff0000",
     fontSize: 16,
     textAlign: "center",
   },
   cartCard: {
     width: 150,
     height: 150,
-    // flexDirection: "column",
-    // elevation: 2,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    borderRadius: 20,
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    // marginBottom: 16,
   },
-  cartHeader: {
+  cartBg: {
     width: "100%",
     height: "100%",
-    // overflow: 'hidden'
-    borderRadius: 20,
-    // paddingHorizontal: 12,
-    // marginBottom: 12,
-    // borderBottomWidth: 1,
-    // borderBottomColor: "#eee",
-    // paddingBottom: 12,
+  },
+
+  imageStyle: {
+    borderRadius: 6,
+    objectFit: "cover",
   },
   cartTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 4,
-    color: "#fff", // Black text
+    fontSize: 14,
+    fontWeight: 900,
+    marginLeft: 12,
+    marginTop: 19,
+    color: "#fff", // White text
   },
   cartUser: {
-    fontSize: 14,
-    color: "#666",
+    fontSize: 10,
+    color: "#fff",
+    marginLeft: 12,
+    fontStyle: "italic",
   },
   listContainer: {
     padding: 16,

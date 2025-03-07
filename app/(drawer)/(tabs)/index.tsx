@@ -5,7 +5,8 @@ import { DrawerBtn } from "@/components/ui/drawerOpnBtn";
 import SearchBar from "@/components/ui/searchBar";
 import AvatarIcon from "@/components/ui/avatar";
 import Category from "@/components/ui/categoryCard.old1";
-import Recent from "@/components/ui/recent";
+import Recent from "@/components/ui/recentCard";
+import { ScrollView } from "react-native-gesture-handler";
 export default function homePage() {
   return (
     <SafeAreaProvider>
@@ -17,6 +18,7 @@ export default function homePage() {
           <View
             className="flex-1  items-center justify-center bg-blue"
             style={{
+              height: 50,
               flexDirection: "row",
               justifyContent: "space-between",
               paddingHorizontal: 8,
@@ -26,17 +28,16 @@ export default function homePage() {
             <AvatarIcon />
           </View>
 
-          <View>
+          <View > 
             <Text
               style={{
                 paddingTop: 30,
                 paddingLeft: 20,
-                fontSize: 40,
-                lineHeight: 32,
+                fontSize: 32,
+                lineHeight: 42,
                 color: "#ffffff",
-                fontWeight: "bold",
+                fontWeight: "900",
                 textOverflow: "wrap",
-                // backgroundColor: "#000000a0",
               }}
             >
               Property Hub for all your needs
@@ -45,13 +46,15 @@ export default function homePage() {
           </View>
         </ImageBackground>
 
-        <View style={{ gap: 8, flexDirection: "column" }}>
-          <Text style={styles.header}>Categories</Text>
-          <Category />
-        </View>
-        <View style={{ gap: 8, flexDirection: "column" }}>
-          <Text style={styles.header}>Recently added</Text>
-          <Recent />
+        <View style={styles.cardContainer}>
+          <View>
+            <Text style={styles.header}>Categories</Text>
+            <Category />
+          </View>
+          <View>
+            <Text style={styles.header}>Recently added</Text>
+            <Recent />
+          </View>
         </View>
       </SafeAreaView>
     </SafeAreaProvider>
@@ -60,7 +63,6 @@ export default function homePage() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -73,11 +75,16 @@ const styles = StyleSheet.create({
     height: 1,
     width: "80%",
   },
+  cardContainer: {
+    gap: 8,
+    flexDirection: "column",
+    paddingTop: 54,
+  },
+  
   header: {
-    paddingTop: 34,
     paddingLeft: 12,
-    fontSize: 28,
-    fontWeight: "500",
+    fontSize: 20,
+    fontWeight: "600",
     fontFamily: "",
   },
   imgBg: {

@@ -131,6 +131,7 @@ const Category = ({ onApartmentPress = () => {} }: CategoryProps) => {
                 Starting Price: ${location.apartments[0].price}
               </Text>
             </View>
+
             <View style={styles.cartProducts}>
               {location.apartments.map((apartment, index) => (
                 <View key={index} style={styles.productItem}>
