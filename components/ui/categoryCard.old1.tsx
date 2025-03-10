@@ -7,7 +7,6 @@ import {
   ActivityIndicator,
   FlatList,
   ImageBackground,
-  ScrollView,
   Pressable,
 } from "react-native";
 import { Card } from "react-native-paper";
@@ -97,32 +96,35 @@ const Category = ({ onApartmentPress = () => {} }: CategoryProps) => {
     );
   }
 
+  const renderItem = ({ item }: { item: LocationData }) => (
+    <Pressable onPress={() => onApartmentPress(item.apartments[1])}>
+      <Card key={item.id} style={styles.cartCard}>
+        <ImageBackground
+          source={{
+            uri: item.apartments[1].images[1]?.url || "default-image-uri",
+          }}
+          style={styles.cartBg}
+          imageStyle={styles.imageStyle}
+        >
+          <Text style={styles.cartTitle}>{item.name}</Text>
+          <Text style={styles.cartUser}>
+            {item.apartments.length} Apartments Available
+          </Text>
+        </ImageBackground>
+      </Card>
+    </Pressable>
+  );
+
   return (
     <View style={styles.container}>
-      <ScrollView
+      <FlatList
+        data={locations}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
         horizontal
-        nestedScrollEnabled
-        contentContainerStyle={{ gap: 16, paddingHorizontal: 12 }}
-      >
-        {locations.map((item) => (
-          <Pressable onPress={() => onApartmentPress(item.apartments[1])}>
-            <Card key={item.id} style={styles.cartCard}>
-              <ImageBackground
-                source={{
-                  uri: item.apartments[1].images[1]?.url || "default-image-uri",
-                }}
-                style={styles.cartBg}
-                imageStyle={styles.imageStyle}
-              >
-                <Text style={styles.cartTitle}>{item.name}</Text>
-                <Text style={styles.cartUser}>
-                  {item.apartments.length} Apartments Available
-                </Text>
-              </ImageBackground>
-            </Card>
-          </Pressable>
-        ))}
-      </ScrollView>
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ paddingHorizontal: 14, gap: 14, height: 150, flex: 1 }}
+      />
     </View>
   );
 };
@@ -142,7 +144,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
-    backgroundColor: "#ffbaba", //  background for error state
+    backgroundColor: "#ffbaba", // background for error state
   },
   errorText: {
     color: "#ff0000",
@@ -157,14 +159,13 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-
   imageStyle: {
     borderRadius: 6,
     objectFit: "cover",
   },
   cartTitle: {
     fontSize: 14,
-    fontWeight: 900,
+    fontWeight: "bold",
     marginLeft: 12,
     marginTop: 19,
     color: "#fff", // White text
@@ -174,9 +175,6 @@ const styles = StyleSheet.create({
     color: "#fff",
     marginLeft: 12,
     fontStyle: "italic",
-  },
-  listContainer: {
-    padding: 16,
   },
 });
 

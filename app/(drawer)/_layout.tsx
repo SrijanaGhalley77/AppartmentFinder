@@ -2,11 +2,15 @@
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { Drawer } from 'expo-router/drawer'
 import { CustomDrawerContent } from '@/components/CustomDrawerContent'
+import { StyleSheet } from 'react-native'
 
 const DrawerLayout = () => {
   return (
     <GestureHandlerRootView style={{flex: 1}}>
-        <Drawer drawerContent={CustomDrawerContent} screenOptions={{headerShown: false}}>
+          <Drawer
+              drawerContent={CustomDrawerContent}
+              screenOptions={{ headerShown: false }}
+          >
             <Drawer.Screen 
             name='(tabs)'
             options={{ 
@@ -40,3 +44,4 @@ const DrawerLayout = () => {
 }
 
 export default DrawerLayout
+

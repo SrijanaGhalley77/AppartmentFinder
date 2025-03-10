@@ -1,12 +1,11 @@
-import { ImageBackground, StyleSheet } from "react-native";
+import { ImageBackground, StyleSheet, View, Text } from "react-native";
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
-import { View, Text } from "react-native";
 import { DrawerBtn } from "@/components/ui/drawerOpnBtn";
 import SearchBar from "@/components/ui/searchBar";
 import AvatarIcon from "@/components/ui/avatar";
 import Category from "@/components/ui/categoryCard.old1";
 import Recent from "@/components/ui/recentCard";
-import { ScrollView } from "react-native-gesture-handler";
+
 export default function homePage() {
   return (
     <SafeAreaProvider>
@@ -16,7 +15,6 @@ export default function homePage() {
           style={styles.imgBg}
         >
           <View
-            className="flex-1  items-center justify-center bg-blue"
             style={{
               height: 50,
               flexDirection: "row",
@@ -27,8 +25,7 @@ export default function homePage() {
             <DrawerBtn />
             <AvatarIcon />
           </View>
-
-          <View > 
+          <View>
             <Text
               style={{
                 paddingTop: 30,
@@ -45,7 +42,6 @@ export default function homePage() {
             <SearchBar />
           </View>
         </ImageBackground>
-
         <View style={styles.cardContainer}>
           <View>
             <Text style={styles.header}>Categories</Text>
@@ -63,6 +59,7 @@ export default function homePage() {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -77,15 +74,13 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     gap: 8,
-    flexDirection: "column",
+    // flexDirection: "column",
     paddingTop: 54,
   },
-  
   header: {
     paddingLeft: 12,
     fontSize: 20,
     fontWeight: "600",
-    fontFamily: "",
   },
   imgBg: {
     height: 200,

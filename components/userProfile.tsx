@@ -1,14 +1,28 @@
-import { View, Text, Pressable } from 'react-native'
-import React from 'react'
-import { Link } from 'expo-router'
+import { View, Text, Pressable, Image, StyleSheet } from "react-native";
+import React from "react";
 
-function UserProfile () {
+function UserProfile() {
   return (
     <View>
-      <Text> UserProfile</Text>
+      <Image
+        source={require("../assets/images/user.webp")}
+        style={styles.image}
+      />
+      <Text>User Name</Text>
     </View>
-
-  )
+  );
 }
 
-export default UserProfile
+export default UserProfile;
+
+const styles = StyleSheet.create({
+  container: {},
+  image: {
+    width: 150,
+    height: 150,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 100,
+  },
+});
