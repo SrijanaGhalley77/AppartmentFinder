@@ -1,12 +1,17 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text } from "react-native";
+import UserProfile from "@/components/userProfile";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
-function UserPage () {
+function UserPage() {
   return (
-    <View>
-      <Text>UserPage</Text>
-    </View>
-  )
+    <SafeAreaProvider>
+      <SafeAreaView>
+        <View>
+          <UserProfile />
+        </View>
+      </SafeAreaView>
+    </SafeAreaProvider>
+  );
 }
 
-export default UserPage
+export default UserPage;

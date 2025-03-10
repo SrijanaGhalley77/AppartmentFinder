@@ -5,8 +5,8 @@ import {
 } from "@react-navigation/drawer";
 import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { View, Text, Image, Button } from "react-native";
-// import { Button } from "react-native-paper";
+import { View, Text, Image } from "react-native";
+import { Button } from "react-native-paper";
 
 export function CustomDrawerContent(props: any) {
   const router = useRouter();
@@ -16,15 +16,15 @@ export function CustomDrawerContent(props: any) {
     <DrawerContentScrollView
       {...props}
       scrollEnabled={false}
-      contentContainerStyle={{ backgroundColor: "#dde3fe", height: 'lvh' }}
+      contentContainerStyle={{ backgroundColor: "#fefefe", height: '100%' }}
     >
       <View
         style={{
           width: "100%",
-          // height: "100%",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
+          padding: top,
         }}
       >
         <Image
@@ -53,12 +53,10 @@ export function CustomDrawerContent(props: any) {
           paddingHorizontal: 20,
           paddingVertical: 5,
         }}
-        // className="border-t border-[#dde3fe] px-20 py-5"
       >
-        {/* <Button mode="contained" buttonColor="#5363df" textColor="#fff">
+        <Button mode="contained" buttonColor="#5363df" textColor="#fff" onPress={() => {null}}>
           Contact Us
-        </Button> */}
-        <Button title="Contact Us" onPress={() => {null}} />
+        </Button>
       </View>
     </DrawerContentScrollView>
   );
