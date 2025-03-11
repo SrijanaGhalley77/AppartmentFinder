@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "756585134968",
+    "project_id": "appartmentfinder-expo",
+    "storage_bucket": "appartmentfinder-expo.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:756585134968:android:cbfb0f4963a70814fd268d",
+        "android_client_info": {
+          "package_name": "com.selise.appartmentFinder"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9Y8KkFrLEM-ulBuvDssPx4EK9OiRGKus"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
