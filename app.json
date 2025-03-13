@@ -4,7 +4,7 @@
     "slug": "AppartmentFinder",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/logo.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -32,7 +32,7 @@
         "expo-splash-screen",
         {
           "image": "./assets/images/SplashScreen.png",
-          "imageWidth": 200,
+          "imageWidth": "full",
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }

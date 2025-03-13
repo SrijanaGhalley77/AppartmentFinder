@@ -1,4 +1,5 @@
 import "../gesture-handler";
+import "../global.css";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
@@ -19,7 +20,6 @@ import {
 } from "@react-navigation/native";
 import merge from "deepmerge";
 import { Stack } from "expo-router";
-
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -57,12 +57,11 @@ export default function RootLayout() {
 
   return (
     <PaperProvider theme={paperTheme}>
-      {/* <ThemeProvider value={paperTheme}> */}
       <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="(auth)" />
-        {/* <Stack.Screen name="(drawer)" /> */}
+        <Stack.Screen name="index" options={{headerShown: false}}/>
+        <Stack.Screen name="(auth)" options={{headerShown: false}}/>
+        <Stack.Screen name="(drawer)" />
       </Stack>
-      {/* </ThemeProvider> */}
     </PaperProvider>
   );
 }

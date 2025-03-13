@@ -123,7 +123,12 @@ const Category = ({ onApartmentPress = () => {} }: CategoryProps) => {
         keyExtractor={(item) => item.id}
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ paddingHorizontal: 14, gap: 14, height: 150, flex: 1 }}
+        contentContainerStyle={{
+          paddingHorizontal: 14,
+          gap: 14,
+          height: 150,
+          flex: 1,
+        }}
       />
     </View>
   );
@@ -132,7 +137,7 @@ const Category = ({ onApartmentPress = () => {} }: CategoryProps) => {
 // Simplified styles with debugging colors
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
+    paddingTop: 16,
     overflowX: "scroll",
   },
   loadingContainer: {
