@@ -10,6 +10,7 @@ import { StyleSheet, Text, View } from "react-native";
       <Stack.Screen name="welcome" options={{headerShown: false}}/>
       <Stack.Screen name="loginScreen" options={{headerShown: false}}/>
       <Stack.Screen name="registerScreen" options={{headerShown: false}}/>
+      <Stack.Screen name="forgotScreen" options={{headerShown: true}}/>
     </Stack>
   );
 }

@@ -1,140 +1,37 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  GestureResponderEvent,
-} from "react-native";
+import { View, Text, TextInput, GestureResponderEvent } from "react-native";
 import { useState } from "react";
-import { Button, Checkbox, Divider } from "react-native-paper";
-import { Link } from "expo-router";
-
+import CustomButton from "@/components/ui/customButton";
 export default function ForgotPage() {
-  const [userName, setUserName] = useState("");
-  const [password, setpassword] = useState("");
+  const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [checked, setChecked] = useState(false);
 
   return (
-    <View style={styles.container}>
-      <View>
-        <Text style={styles.title}>Confirm your email</Text>
-        <Text>Enter your account's email, and we'll send a password reset code.</Text>
+    <View className="flex flex-col w-full h-full justify-center items-center bg-[#fff] px-5 gap-10">
+      <View className="w-full flex flex-col gap-8 justify-center items-center">
+        <Text className="text-4xl font-bold">Confirm your email</Text>
+        <Text className="text-gray-600 font-medium text-center">
+          Enter your account's email, and we'll send a password reset code.
+        </Text>
       </View>
-      <View style={styles.formInputContainer}>
+
+      <View className="w-full">
         <TextInput
-          style={styles.inputContainer}
-          value={userName}
-          onChangeText={(userName) => setUserName(userName)}
+          className="w-full h-12 px-3 text-gray-800 border-b border-gray-400"
+          value={email}
+          onChangeText={(email) => setEmail(email)}
           placeholder="Enter your email"
           placeholderTextColor="#8c8c8c"
           keyboardType="email-address"
-          cursorColor={"#525252"}
-        ></TextInput>
-        
+          cursorColor="#525252"
+        />
       </View>
-      <View style={{ width: "100%" }}>
-        <Button
-          mode="contained"
-          onPress={() => console.log("Pressed")}
-          style={styles.button}
-          labelStyle={styles.buttonText}
-        >
-          Send Code
-        </Button>
-      </View>
+
       
+        <CustomButton
+          title="Send Code"
+          onPress={() => console.log("Pressed")}
+          className="w-full h-12"
+        />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    paddingHorizontal: 20,
-  },
-  formInputContainer: {
-    width: "100%",
-    flexDirection: "column",
-  },
-  logo: {
-    height: 200,
-    width: 200,
-    resizeMode: "contain",
-    marginBottom: 20,
-  },
-  title: {
-    fontSize: 32,
-    marginBottom: 40,
-    fontWeight: "bold",
-    color: "black",
-  },
-  inputContainer: {
-    flexDirection: "column",
-    alignItems: "center",
-    width: "100%",
-    height: 50,
-    color: "#262626",
-    // backgroundColor: "#ECECEC",
-    // borderRadius: 8,
-    paddingHorizontal: 10,
-    marginBottom: 20,
-    borderBottomWidth: 1,
-    borderColor: "#989898",
-  },
-  icon: {
-    marginRight: 10,
-  },
-  input: {
-    flex: 1,
-    height: "100%",
-  },
-  forgotPassword: {
-    alignSelf: "flex-end",
-    marginBottom: 20,
-    color: "#000",
-  },
-  button: {
-    width: "100%",
-    height: 50,
-    backgroundColor: "#1E90FF",
-    borderRadius: 8,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  checkboxContainer: {
-    width: "100%",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  checkbox: {
-    backgroundColor: "transparent",
-    padding: 0,
-    margin: 0,
-  },
-  checkedStyle: {
-    backgroundColor: "transparent",
-    borderRadius: 4,
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 18,
-  },
-  signUp: {
-    color: "#000",
-  },
-  signUpLink: {
-    color: "#1E90FF",
-  },
-  errorText: {
-    color: "red",
-    alignSelf: "flex-start",
-    marginBottom: 10,
-  },
-});

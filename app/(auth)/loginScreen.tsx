@@ -1,13 +1,9 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  GestureResponderEvent,
-} from "react-native";
+import { View, Text, TextInput, GestureResponderEvent } from "react-native";
 import { useState } from "react";
-import { Button, Checkbox, Divider } from "react-native-paper";
+import { Checkbox, Divider } from "react-native-paper";
 import { Link, router, useRouter } from "expo-router";
+import CustomButton from "@/components/ui/customButton";
+
 
 export default function LoginPage() {
   const [userName, setUserName] = useState("");
@@ -16,36 +12,41 @@ export default function LoginPage() {
   const [checked, setChecked] = useState(false);
 
   const onLogin = () => {
-    router.navigate("/(drawer)/(tabs)")
-  }
+    router.navigate("/(drawer)/(tabs)");
+  };
 
   return (
-    <View style={styles.container}>
-      <View>
-        <Text style={styles.title}>Welcome Back</Text>
-        <Text>Welcome Back, Please Enter your details below</Text>
+    <View className="flex flex-col w-full h-full justify-center items-center bg-[#fff] px-5 gap-8">
+      <View className="w-full flex flex-col gap-8 justify-center items-center">
+        <Text className="text-3xl font-bold">Welcome Back</Text>
+        <Text className="text-gray-600 font-medium text-center">
+          Welcome Back, Please Enter your details below
+        </Text>
       </View>
-      <View style={styles.formInputContainer}>
+
+      <View className="w-full flex flex-col gap-4">
         <TextInput
-          style={styles.inputContainer}
+          className="w-full h-12 px-3 text-gray-800 border-b border-gray-400"
           value={userName}
           onChangeText={(userName) => setUserName(userName)}
           placeholder="User Name"
           placeholderTextColor="#8c8c8c"
           keyboardType="email-address"
-          cursorColor={"#525252"}
-        ></TextInput>
+          cursorColor="#525252"
+        />
+
         <TextInput
-          style={styles.inputContainer}
+          className="w-full h-12 px-3 text-gray-800 border-b border-gray-400"
           value={password}
           onChangeText={(password) => setpassword(password)}
           placeholder="Password"
           placeholderTextColor="#8c8c8c"
           secureTextEntry={true}
-          cursorColor={"#525252"}
-        ></TextInput>
+          cursorColor="#525252"
+        />
       </View>
-      <View style={styles.checkboxContainer}>
+
+      <View className="w-full flex flex-row items-center justify-between pr-6">
         <Checkbox.Item
           label="Remember Me"
           status={checked ? "checked" : "unchecked"}
@@ -53,122 +54,36 @@ export default function LoginPage() {
           accessibilityLabel="Remember me"
           position="leading"
           onPress={() => setChecked(!checked)}
-          style={[styles.checkbox, checked && styles.checkedStyle]}
-          rippleColor="#00000000" // Transparent ripple effect
+          rippleColor="#00000000"
           uncheckedColor="#666666"
           color="#2196F3"
+          labelStyle={{ fontWeight: '500', fontSize: 14, color: 'gray-700' }}
+          style={{padding: 0, margin: 0}}
         />
-        <Link href="/forgotScreen">Forgot Password?</Link>
-      </View>
-      <View style={{ width: "100%" }}>
-        <Button
-          mode="contained"
-          onPress={onLogin}
-          style={styles.button}
-          labelStyle={styles.buttonText}
+        <Link
+          href="/forgotScreen"
+          className="text-gray-700 font-medium underline"
         >
-          Login
-        </Button>
+          Forgot Password?
+        </Link>
       </View>
-      <Divider
-        style={{ height: 2, backgroundColor: "#000", marginVertical: 16 }}
+
+      <CustomButton
+        title="Login"
+        onPress={onLogin}
+        className="h-14 shadow-none"
       />
+
+      <Divider className="w-full h-2 bg-[#262626] my-4" />
+
       <View>
-        <Text>
-          Don't have an account? <Link href="/registerScreen">Register</Link>
+        <Text className="text-gray-400">
+          Don't have an account?{" "}
+          <Link href="/registerScreen" className="text-blue-600 font-semibold">
+            Register
+          </Link>
         </Text>
       </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    paddingHorizontal: 20,
-  },
-  formInputContainer: {
-    width: "100%",
-    flexDirection: "column",
-  },
-  logo: {
-    height: 200,
-    width: 200,
-    resizeMode: "contain",
-    marginBottom: 20,
-  },
-  title: {
-    fontSize: 32,
-    marginBottom: 40,
-    fontWeight: "bold",
-    color: "black",
-  },
-  inputContainer: {
-    flexDirection: "column",
-    alignItems: "center",
-    width: "100%",
-    height: 50,
-    color: "#262626",
-    // backgroundColor: "#ECECEC",
-    // borderRadius: 8,
-    paddingHorizontal: 10,
-    marginBottom: 20,
-    borderBottomWidth: 1,
-    borderColor: "#989898",
-  },
-  icon: {
-    marginRight: 10,
-  },
-  input: {
-    flex: 1,
-    height: "100%",
-  },
-  forgotPassword: {
-    alignSelf: "flex-end",
-    marginBottom: 20,
-    color: "#000",
-  },
-  button: {
-    width: "100%",
-    height: 50,
-    backgroundColor: "#1E90FF",
-    borderRadius: 8,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  checkboxContainer: {
-    width: "100%",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  checkbox: {
-    backgroundColor: "transparent",
-    padding: 0,
-    margin: 0,
-  },
-  checkedStyle: {
-    backgroundColor: "transparent",
-    borderRadius: 4,
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 18,
-  },
-  signUp: {
-    color: "#000",
-  },
-  signUpLink: {
-    color: "#1E90FF",
-  },
-  errorText: {
-    color: "red",
-    alignSelf: "flex-start",
-    marginBottom: 10,
-  },
-});

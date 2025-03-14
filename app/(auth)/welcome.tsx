@@ -5,7 +5,6 @@ import { router } from "expo-router";
 import Swiper from "react-native-swiper";
 import { onboarding } from "@/constants/onBoard";
 import CustomButton from "@/components/ui/customButton";
-import InputField from "@/components/ui/InputField";
 
 const WelcomePage = () => {
   const swiperRef = useRef<Swiper>(null);
@@ -50,14 +49,17 @@ const WelcomePage = () => {
           </View>
         ))}
       </Swiper>
-
-      <CustomButton
-        title={isLastSlide ? "Get Started" : "Continue"}
-        onPress={() => {
-          isLastSlide? router.replace("/(auth)/loginScreen") : swiperRef.current?.scrollBy(1)
-        }}
-        className="w-11/12 mt-10 "
-      />
+      <View className="w-full px-5">
+        <CustomButton
+          title={isLastSlide ? "Get Started" : "Continue"}
+          onPress={() => {
+            isLastSlide
+              ? router.replace("/(auth)/loginScreen")
+              : swiperRef.current?.scrollBy(1);
+          }}
+          className="w-11/12 mt-10"
+        />
+      </View>
     </SafeAreaView>
   );
 };
