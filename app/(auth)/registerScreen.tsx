@@ -3,12 +3,41 @@ import { useState } from "react";
 import { Button, Checkbox, Divider } from "react-native-paper";
 import { Link, router } from "expo-router";
 import CustomButton from "@/components/ui/customButton";
+import {
+  createUserWithEmailAndPassword,
+  getAuth
+} from "@react-native-firebase/auth";
+import { FirebaseError } from "firebase/app";
 
-export default function RegisterPage() {
-  const [userName, setUserName] = useState("");
+const RegisterPage = () => {
+  const [email, setEmail] = useState("");
   const [password, setpassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [checked, setChecked] = useState(false);
+
+  // const onSignup = async () => {
+  //   setIsLoading(true);
+  //   try {
+  //     await auth().createUserWithEmailAndPassword(email, password);
+  //     alert("Registred Successfully, check your email and Please Login again")
+  //     // router.navigate("/(auth)/loginScreen");
+  //   } catch (e: any) {
+  //     const err = e as FirebaseError;
+  //     alert("Registration failed: " + err.message);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+  const auth = getAuth();
+
+  const handleSignUp = async () => {
+    try {
+      await createUserWithEmailAndPassword( auth, email, password);
+      router.replace("/(auth)/loginScreen");
+    } catch (error) {
+      alert('Registration error'+ error)
+    }
+  };
 
   return (
     <View className="flex flex-col w-full h-full justify-center items-center bg-[#fff] px-5 gap-6">
@@ -22,8 +51,8 @@ export default function RegisterPage() {
       <View className="w-full flex flex-col gap-4">
         <TextInput
           className="w-full h-12 px-3 text-gray-800 border-b border-gray-400"
-          value={userName}
-          onChangeText={(userName) => setUserName(userName)}
+          value={email}
+          onChangeText={(email) => setEmail(email)}
           placeholder="Email"
           placeholderTextColor="#8c8c8c"
           keyboardType="email-address"
@@ -69,7 +98,7 @@ export default function RegisterPage() {
 
       <CustomButton
         title="Sign Up"
-        onPress={() => router.navigate("/(auth)/loginScreen")}
+        onPress={handleSignUp}
         className="m-0 shadow-none"
       />
 
@@ -88,4 +117,6 @@ export default function RegisterPage() {
       </View>
     </View>
   );
-}
+};
+
+export default RegisterPage;

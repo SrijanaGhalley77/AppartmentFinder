@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "756585134968",
+    "firebase_url": "https://appartmentfinder-expo-default-rtdb.firebaseio.com",
     "project_id": "appartmentfinder-expo",
     "storage_bucket": "appartmentfinder-expo.firebasestorage.app"
   },
@@ -12,7 +13,20 @@
           "package_name": "com.selise.appartmentFinder"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "756585134968-rm9uknjq9im3fmc4ie91sdq8vu8g2qn7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.selise.appartmentFinder",
+            "certificate_hash": "181a48aef27a086885d412255bd836b3b15de004"
+          }
+        },
+        {
+          "client_id": "756585134968-6qpfvqdhnhddnof9c0obvpght81lj0f2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyA9Y8KkFrLEM-ulBuvDssPx4EK9OiRGKus"
@@ -20,7 +34,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "756585134968-6qpfvqdhnhddnof9c0obvpght81lj0f2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "756585134968-28i9bn6la1d6dts95g0lsqetaurqchiu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.selise.appartmentFinder"
+              }
+            }
+          ]
         }
       }
     }

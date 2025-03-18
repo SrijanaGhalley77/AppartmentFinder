@@ -3,17 +3,45 @@ import { useState } from "react";
 import { Checkbox, Divider } from "react-native-paper";
 import { Link, router, useRouter } from "expo-router";
 import CustomButton from "@/components/ui/customButton";
+// import auth from "@react-native-firebase/auth";
+// import { FirebaseError } from "firebase/app";
+import { getAuth, signInWithEmailAndPassword } from "@react-native-firebase/auth";
 
-
-export default function LoginPage() {
+ const LoginPage = () => {
   const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setpassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [checked, setChecked] = useState(false);
 
-  const onLogin = () => {
-    router.navigate("/(drawer)/(tabs)");
-  };
+  // const onLogin = async () => {
+  //   setIsLoading(true);
+  //   try {
+  //     await auth().signInWithEmailAndPassword(userName, password);
+  //     // router.navigate("/(drawer)/(tabs)");
+  //   } catch (e: any) {
+  //     const err = e as FirebaseError;
+  //     alert("Sign in failed: " + err.message);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+   // };
+   const auth = getAuth();
+   const handleLogIn = async () => {
+     try {
+      
+       const userCredential = await signInWithEmailAndPassword(
+         auth,
+         email,
+         password,
+       );
+       alert("Signed In successfully" + userCredential.user);
+       router.push("/(drawer)/(tabs)")
+     } catch (error) {
+      alert("Sign In failed:" + error)
+     }
+
+   }
 
   return (
     <View className="flex flex-col w-full h-full justify-center items-center bg-[#fff] px-5 gap-8">
@@ -29,7 +57,7 @@ export default function LoginPage() {
           className="w-full h-12 px-3 text-gray-800 border-b border-gray-400"
           value={userName}
           onChangeText={(userName) => setUserName(userName)}
-          placeholder="User Name"
+          placeholder="User Name/ Email"
           placeholderTextColor="#8c8c8c"
           keyboardType="email-address"
           cursorColor="#525252"
@@ -57,8 +85,8 @@ export default function LoginPage() {
           rippleColor="#00000000"
           uncheckedColor="#666666"
           color="#2196F3"
-          labelStyle={{ fontWeight: '500', fontSize: 14, color: 'gray-700' }}
-          style={{padding: 0, margin: 0}}
+          labelStyle={{ fontWeight: "500", fontSize: 14, color: "gray-700" }}
+          style={{ padding: 0, margin: 0 }}
         />
         <Link
           href="/forgotScreen"
@@ -70,7 +98,7 @@ export default function LoginPage() {
 
       <CustomButton
         title="Login"
-        onPress={onLogin}
+        onPress={handleLogIn}
         className="h-14 shadow-none"
       />
 
@@ -87,3 +115,4 @@ export default function LoginPage() {
     </View>
   );
 }
+export default LoginPage;

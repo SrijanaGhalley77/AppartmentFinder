@@ -2,7 +2,6 @@ import "../gesture-handler";
 import "../global.css";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
 import "react-native-reanimated";
 import {
   MD3LightTheme as DefaultTheme,
@@ -12,14 +11,21 @@ import {
   adaptNavigationTheme,
 } from "react-native-paper";
 import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "react-native";
+import { ActivityIndicator, useColorScheme, View } from "react-native";
 import {
   DarkTheme as NavigationDarkTheme,
   DefaultTheme as NavigationDefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
 import merge from "deepmerge";
-import { Stack } from "expo-router";
+import { Stack, useRouter, useSegments } from "expo-router";
+import { useEffect, useState } from "react";
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+
+// import { SessionProvider } from "@/context";
+import { Slot } from "expo-router";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { AuthContextProvider } from "@/context/Auth";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -55,16 +61,67 @@ export default function RootLayout() {
     return null;
   }
 
+  // // For authentication
+  // const [initializing, setInitializing] = useState(true);
+  // const [user, setUser] = useState<FirebaseAuthTypes.User | null>();
+  // const router = useRouter();
+  // const segments = useSegments();
+
+  // const onAuthStateChanged = (User: FirebaseAuthTypes.User | null) => {
+  //   console.log("onAuthStateChanged", User);
+  //   setUser(User);
+  //   // if (initializing) setInitializing(false);
+  // };
+  // useEffect(() => {
+  //   const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+  //   return subscriber;
+  // }, []);
+
+  // if (initializing)
+  //   return (
+  //     <View className="items-center justify-center flex-1">
+  //       <ActivityIndicator size={"large"} />
+  //     </View>
+  //   );
+
+  // useEffect(() => {
+  //   if (initializing) return;
+  //   const inAuthGroup = segments[0] === "(auth)";
+  //   if (user && inAuthGroup) {
+  //     router.replace('/(drawer)/(tabs)')
+  //   } else if (!user && inAuthGroup) {
+  //     router.replace('/')
+  //   }
+  // }, [user, initializing])
   return (
-    <PaperProvider theme={paperTheme}>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="index" options={{headerShown: false}}/>
-        <Stack.Screen name="(auth)" options={{headerShown: false}}/>
-        <Stack.Screen name="(drawer)" />
-      </Stack>
-    </PaperProvider>
+    <AuthContextProvider>
+      <PaperProvider theme={paperTheme}>
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          <Stack.Screen name="(drawer)" />
+        </Stack>
+      </PaperProvider>
+    </AuthContextProvider>
+
+    // <SessionProvider>
+    //   {/*
+    //     GestureHandlerRootView is required for:
+    //     - Drawer navigation gestures
+    //     - Swipe gestures
+    //     - Other gesture-based interactions
+    //     Must wrap the entire app to function properly
+    //   */}
+    //   <GestureHandlerRootView style={{ flex: 1 }}>
+    //     {/*
+    //       Slot renders child routes dynamically
+    //       This includes both (app) and (auth) group routes
+    //     */}
+    //     <Slot />
+    //   </GestureHandlerRootView>
+    // </SessionProvider>
   );
 }
-function useMaterial3Theme(): { theme: any } {
-  throw new Error("Function not implemented.");
-}
+// function useMaterial3Theme(): { theme: any } {
+//   throw new Error("Function not implemented.");
+// }
