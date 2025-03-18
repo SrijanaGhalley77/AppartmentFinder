@@ -61,38 +61,7 @@ export default function RootLayout() {
     return null;
   }
 
-  // // For authentication
-  // const [initializing, setInitializing] = useState(true);
-  // const [user, setUser] = useState<FirebaseAuthTypes.User | null>();
-  // const router = useRouter();
-  // const segments = useSegments();
 
-  // const onAuthStateChanged = (User: FirebaseAuthTypes.User | null) => {
-  //   console.log("onAuthStateChanged", User);
-  //   setUser(User);
-  //   // if (initializing) setInitializing(false);
-  // };
-  // useEffect(() => {
-  //   const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-  //   return subscriber;
-  // }, []);
-
-  // if (initializing)
-  //   return (
-  //     <View className="items-center justify-center flex-1">
-  //       <ActivityIndicator size={"large"} />
-  //     </View>
-  //   );
-
-  // useEffect(() => {
-  //   if (initializing) return;
-  //   const inAuthGroup = segments[0] === "(auth)";
-  //   if (user && inAuthGroup) {
-  //     router.replace('/(drawer)/(tabs)')
-  //   } else if (!user && inAuthGroup) {
-  //     router.replace('/')
-  //   }
-  // }, [user, initializing])
   return (
     <AuthContextProvider>
       <PaperProvider theme={paperTheme}>
@@ -104,24 +73,9 @@ export default function RootLayout() {
       </PaperProvider>
     </AuthContextProvider>
 
-    // <SessionProvider>
-    //   {/*
-    //     GestureHandlerRootView is required for:
-    //     - Drawer navigation gestures
-    //     - Swipe gestures
-    //     - Other gesture-based interactions
-    //     Must wrap the entire app to function properly
-    //   */}
-    //   <GestureHandlerRootView style={{ flex: 1 }}>
-    //     {/*
-    //       Slot renders child routes dynamically
-    //       This includes both (app) and (auth) group routes
-    //     */}
-    //     <Slot />
-    //   </GestureHandlerRootView>
-    // </SessionProvider>
+
   );
 }
-// function useMaterial3Theme(): { theme: any } {
-//   throw new Error("Function not implemented.");
-// }
+function useMaterial3Theme(): { theme: any } {
+  throw new Error("Function not implemented.");
+}
