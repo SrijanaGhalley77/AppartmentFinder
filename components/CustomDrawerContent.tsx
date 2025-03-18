@@ -43,7 +43,7 @@ export function CustomDrawerContent(props: any) {
 
       <View>
         <DrawerItemList {...props} />
-        <DrawerItem label={"Logout"} onPress={() => router.replace("/")} />
+        <DrawerItem label={"Logout"} onPress={() => router.replace("/(auth)/loginScreen")} />
       </View>
 
       <View

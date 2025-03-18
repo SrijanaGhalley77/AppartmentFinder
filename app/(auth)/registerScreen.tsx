@@ -1,42 +1,65 @@
-import { View, Text, TextInput, GestureResponderEvent } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import { useState } from "react";
-import { Button, Checkbox, Divider } from "react-native-paper";
+import { Checkbox, Divider } from "react-native-paper";
 import { Link, router } from "expo-router";
 import CustomButton from "@/components/ui/customButton";
-import {
-  createUserWithEmailAndPassword,
-  getAuth
-} from "@react-native-firebase/auth";
-import { FirebaseError } from "firebase/app";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth } from "../../firebaseConfig";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
-  const [password, setpassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
+    useState(false);
   const [checked, setChecked] = useState(false);
 
-  // const onSignup = async () => {
-  //   setIsLoading(true);
-  //   try {
-  //     await auth().createUserWithEmailAndPassword(email, password);
-  //     alert("Registred Successfully, check your email and Please Login again")
-  //     // router.navigate("/(auth)/loginScreen");
-  //   } catch (e: any) {
-  //     const err = e as FirebaseError;
-  //     alert("Registration failed: " + err.message);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-  const auth = getAuth();
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
 
-  const handleSignUp = async () => {
-    try {
-      await createUserWithEmailAndPassword( auth, email, password);
-      router.replace("/(auth)/loginScreen");
-    } catch (error) {
-      alert('Registration error'+ error)
+  const toggleConfirmPasswordVisibility = () => {
+    setIsConfirmPasswordVisible(!isConfirmPasswordVisible);
+  };
+
+  const handleSignUp = () => {
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (!email || !emailRegex.test(email)) {
+      Alert.alert("Invalid Email", "Please enter a valid email address.");
+      return;
     }
+
+    if (!password || password.length < 6) {
+      Alert.alert(
+        "Weak Password",
+        "Password must be at least 6 characters long.",
+      );
+      return;
+    }
+    if (password !== confirmPassword) {
+      Alert.alert("Error", "Passwords do not match. Please re-enter.");
+      return;
+    }
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        return updateProfile(userCredential.user, {
+          displayName: userName,
+        }).then(() => {
+          Alert.alert(
+            "Sign-Up Successful!",
+            `Welcome, ${userName}. Please log in.`,
+          );
+          router.navigate("/(auth)/loginScreen");
+        });
+      })
+      .catch((error) => {
+        Alert.alert("Sign-Up Failed!", error.message);
+      });
   };
 
   return (
@@ -51,36 +74,61 @@ const RegisterPage = () => {
       <View className="w-full flex flex-col gap-4">
         <TextInput
           className="w-full h-12 px-3 text-gray-800 border-b border-gray-400"
+          value={userName}
+          onChangeText={setUserName}
+          placeholder="User Name"
+          placeholderTextColor="#8c8c8c"
+          cursorColor="#525252"
+        />
+        <TextInput
+          className="w-full h-12 px-3 text-gray-800 border-b border-gray-400"
           value={email}
-          onChangeText={(email) => setEmail(email)}
+          onChangeText={setEmail}
           placeholder="Email"
           placeholderTextColor="#8c8c8c"
           keyboardType="email-address"
           cursorColor="#525252"
         />
 
-        <TextInput
-          className="w-full h-12 px-3 text-gray-800 border-b border-gray-400"
-          value={password}
-          onChangeText={(password) => setpassword(password)}
-          placeholder="Create Password"
-          placeholderTextColor="#8c8c8c"
-          secureTextEntry={true}
-          cursorColor="#525252"
-        />
+        <View className="w-full flex flex-row items-center border-b border-gray-400 pr-4">
+          <TextInput
+            className="flex-1 h-12 px-3 text-gray-800"
+            value={password}
+            onChangeText={setPassword}
+            placeholder="Create Password"
+            placeholderTextColor="#8c8c8c"
+            secureTextEntry={!isPasswordVisible}
+            cursorColor="#525252"
+          />
+          <TouchableOpacity onPress={togglePasswordVisibility}>
+            <MaterialIcons
+              name={isPasswordVisible ? "visibility" : "visibility-off"}
+              size={24}
+              color="gray"
+            />
+          </TouchableOpacity>
+        </View>
 
-        <TextInput
-          className="w-full h-12 px-3 text-gray-800 border-b border-gray-400"
-          value={password}
-          onChangeText={(password) => setpassword(password)}
-          placeholder="Confirm Password"
-          placeholderTextColor="#8c8c8c"
-          secureTextEntry={true}
-          cursorColor="#525252"
-        />
+        <View className="w-full flex flex-row items-center border-b border-gray-400 pr-4">
+          <TextInput
+            className="flex-1 h-12 px-3 text-gray-800"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            placeholder="Confirm Password"
+            placeholderTextColor="#8c8c8c"
+            secureTextEntry={!isConfirmPasswordVisible}
+            cursorColor="#525252"
+          />
+          <TouchableOpacity onPress={toggleConfirmPasswordVisibility}>
+            <MaterialIcons
+              name={isConfirmPasswordVisible ? "visibility" : "visibility-off"}
+              size={24}
+              color="gray"
+            />
+          </TouchableOpacity>
+        </View>
       </View>
-
-      <View className="w-full flex flex-row items-center justify-between">
+      <View className="w-full flex flex-row items-center justify-between m-0 p-0">
         <Checkbox.Item
           label="Agree to Terms and condition"
           status={checked ? "checked" : "unchecked"}
@@ -92,7 +140,7 @@ const RegisterPage = () => {
           uncheckedColor="#666666"
           color="#2196F3"
           labelStyle={{ fontWeight: "400", fontSize: 14, color: "gray-700" }}
-          style={{ padding: 0, margin: 0 }}
+          style={{ padding: 0, marginVertical: -15, marginHorizontal: -20 }}
         />
       </View>
 
@@ -101,20 +149,17 @@ const RegisterPage = () => {
         onPress={handleSignUp}
         className="m-0 shadow-none"
       />
-
       <Divider className="w-full h-1 bg-[#262626] my-4" />
 
-      <View>
-        <Text className="text-gray-400">
-          Have an account?{" "}
-          <Link
-            href="/(auth)/loginScreen"
-            className="text-blue-600 font-semibold"
-          >
-            Login
-          </Link>
-        </Text>
-      </View>
+      <Text className="text-gray-400">
+        Have an account?{" "}
+        <Link
+          href="/(auth)/loginScreen"
+          className="text-blue-600 font-semibold"
+        >
+          Login
+        </Link>
+      </Text>
     </View>
   );
 };

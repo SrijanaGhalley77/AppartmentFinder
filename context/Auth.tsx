@@ -6,8 +6,7 @@ import {
   ReactNode,
 } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
-import { auth } from "@/firebaseConfig";
-
+import {auth} from "@/firebaseConfig"
 // Define types for better TypeScript support
 interface AuthContextType {
   user: User | null;
@@ -30,6 +29,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
   );
 };
+
 
 // Custom hook to use AuthContext
 export const useAuth = (): AuthContextType => {
