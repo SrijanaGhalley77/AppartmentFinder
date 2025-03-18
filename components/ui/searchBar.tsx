@@ -1,48 +1,43 @@
-import { View, Text, Pressable } from 'react-native'
-import { Searchbar } from 'react-native-paper';
-import { useState } from 'react';
-import { Ionicons } from '@expo/vector-icons';
+import { View, Pressable, ViewStyle, TextStyle } from "react-native";
+import { Searchbar } from "react-native-paper";
+import { useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
 
+// Add type definition for props
+interface SearchBarProps {
+  style?: ViewStyle;
+  className?: string; // className prop for NativeWind (Tailwind CSS classes)
+  searchbarStyle?: TextStyle;
+}
 
-const SearchBar = () => {
-    const [searchQuery, setSearchQuery ] = useState('');
+const SearchBar = ({ style, className, searchbarStyle }: SearchBarProps) => {
+  const [searchQuery, setSearchQuery] = useState("");
+
   return (
     <View
-      style={{
-        width: 380,
-        height: 70,
-        flexDirection: "row",
-        gap: 8,
-        justifyContent: "center",
-        alignItems: "center",
-        alignSelf: "center",
-        borderRadius: 20,
-        backgroundColor: "#fafafa",
-        position: 'absolute',
-        top: 116,
-      }}
+      style={style}
+      className={`w-[390px] h-[70px] p-10 flex-row gap-[8px] justify-center items-center self-center rounded-xl bg-[#fafafa] ${className}`}
     >
       <Searchbar
         placeholder="Search"
         onChangeText={setSearchQuery}
         value={searchQuery}
         mode="bar"
-        style={{ width: 320, height: 50 }}
+        style={
+          ([{
+            width: 320,
+            height: 50,
+            backgroundColor: "#eeeeee",
+            borderRadius: 6,
+            alignItems: "center",
+          }, searchbarStyle])
+        }
       />
-      <Pressable
-        style={{
-          width: 40,
-          height: 40,
-          backgroundColor: "#FAFAFA",
-          borderRadius: 100,
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Ionicons name="options" size={24} color="#000" />
+      <Pressable className="w-[45px] h-[45px] bg-[#eeeeee] rounded-full items-center justify-center">
+        <Ionicons name="options" size={26} color="#000" />
       </Pressable>
     </View>
   );
-}
+};
 
-export default SearchBar
+export default SearchBar;

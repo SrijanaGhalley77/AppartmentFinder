@@ -1,11 +1,13 @@
-import { View, Text } from 'react-native'
+import { SafeAreaView, Text } from 'react-native'
 import React from 'react'
+import SearchBar from '@/components/ui/searchBar'
 
 function SearchPage () {
   return (
-    <View>
+    <SafeAreaView>
+      <SearchBar />
       <Text>SearchPage</Text>
-    </View>
+    </SafeAreaView>
   )
 }
 
