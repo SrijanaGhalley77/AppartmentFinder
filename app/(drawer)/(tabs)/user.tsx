@@ -2,21 +2,19 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import UserProfile from "@/components/userProfile";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
-import { useNavigation } from "expo-router";
+import { router } from "expo-router";
 
 function UserPage() {
-  const navigation = useNavigation();
 
-  const onPress = () => {
-    // navigation.navigate("/")
-    console.log("pressed Back btn");
+  const handleBack = () => {
+    router.replace("/(drawer)/(tabs)");
   };
   return (
     <SafeAreaProvider>
       <SafeAreaView>
         <View style={styles.container}>
           <View style={styles.iconContainer}>
-            <TouchableOpacity style={styles.backIcon} onPress={onPress}>
+            <TouchableOpacity style={styles.backIcon} onPress={handleBack}>
               <AntDesign name="left" size={20} color="#262626" />
             </TouchableOpacity>
             <Text style={styles.headerText}>Setting</Text>

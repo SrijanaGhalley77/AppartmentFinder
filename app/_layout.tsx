@@ -26,6 +26,8 @@ import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { Slot } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { AuthContextProvider } from "@/context/Auth";
+import { Provider } from "react-redux";
+import { store } from "@/redux/reduxwithts/store";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -61,19 +63,18 @@ export default function RootLayout() {
     return null;
   }
 
-
   return (
-    <AuthContextProvider>
-      <PaperProvider theme={paperTheme}>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          <Stack.Screen name="(drawer)" />
-        </Stack>
-      </PaperProvider>
-    </AuthContextProvider>
-
-
+    <Provider store={store}>
+      <AuthContextProvider>
+        <PaperProvider theme={paperTheme}>
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+            <Stack.Screen name="(drawer)" />
+          </Stack>
+        </PaperProvider>
+      </AuthContextProvider>
+    </Provider>
   );
 }
 function useMaterial3Theme(): { theme: any } {

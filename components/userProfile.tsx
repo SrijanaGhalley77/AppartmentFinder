@@ -9,6 +9,7 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import { List } from "react-native-paper";
 
+
 function UserProfile() {
   return (
     <View style={styles.container}>
@@ -20,7 +21,7 @@ function UserProfile() {
         <Text style={styles.userName}>User Name</Text>
         <Text>Rentor</Text>
       </View>
-      <View style={{gap: 16}}>
+      <View style={{ gap: 16 }}>
         <List.Item
           title="My Profile"
           style={styles.listRow}
@@ -38,7 +39,9 @@ function UserProfile() {
             />
           )}
           right={(props) => (
-            <List.Icon {...props} icon="chevron-right" color="#D4D4D4" />
+            <Pressable>
+              <List.Icon {...props} icon="chevron-right" color="#D4D4D4" />
+            </Pressable>
           )}
         />
         <List.Item

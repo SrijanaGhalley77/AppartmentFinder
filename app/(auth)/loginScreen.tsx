@@ -31,7 +31,6 @@ const LoginPage = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        Alert.alert("Login successful!", `Hello, ${user.email}`);
         router.navigate("/(drawer)/(tabs)");
       })
       .catch((error) => {
