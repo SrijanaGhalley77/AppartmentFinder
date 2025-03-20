@@ -2,6 +2,7 @@ import { View, Pressable, StyleProp, ViewStyle, TextStyle } from "react-native";
 import { Searchbar } from "react-native-paper";
 import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
+import { Link, router } from "expo-router";
 
 // Type definition for props
 interface SearchBarProps {
@@ -28,7 +29,7 @@ const SearchBar = ({
   return (
     <View
       style={style}
-      className={`w-[380px] h-[70px] p-4 flex-row gap-[8px] justify-center items-center self-center rounded-xl bg-[#fafafa] ${className}`}
+      className={`w-[380px] h-[70px] p-4 flex-row gap-[8px] justify-center items-center rounded-xl bg-[#fafafa] ${className}`}
     >
       <Searchbar
         placeholder={label ?? "Search here"}
@@ -43,18 +44,20 @@ const SearchBar = ({
             borderRadius: 6,
             alignItems: "center",
           },
-          searchbarStyle as ViewStyle, 
+          searchbarStyle as ViewStyle,
         ]}
         inputStyle={{
           color: "#262626",
         }}
         iconColor={iconColor ?? "#262626"}
       />
+      <Link href={"/(modal)/filter"} asChild>
       <Pressable
         className={`w-[45px] h-[45px] bg-[#eeeeee] rounded-full items-center justify-center ${filterIconStyle}`}
-      >
+        >
         <Ionicons name="options" size={filterIconSize ?? 26} color="#262626" />
       </Pressable>
+        </Link>
     </View>
   );
 };

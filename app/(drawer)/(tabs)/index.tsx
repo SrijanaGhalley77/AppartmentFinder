@@ -39,7 +39,7 @@ export default function homePage() {
             >
               Property Hub for all your needs
             </Text>
-            <SearchBar className="absolute top-[116px]" />
+            <SearchBar className="absolute top-[116px] self-center" />
           </View>
         </ImageBackground>
         <View style={styles.cardContainer}>

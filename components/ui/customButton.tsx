@@ -11,7 +11,8 @@ const getBgVariantStyle = (variant: ButtonProps["bgVariant"]) => {
     case "success":
       return "bg-green-500";
     case "outline":
-      return "bg-transparent border-neutral-300 border-[0.5px]";
+      return "bg-transparent border-[#D4D4D4] border-[1px] hover:bg-[#FAFAFA] hover:border-[#D4D4D4] active:bg-[#1E40AF]  active:border-none";
+
     default:
       return "bg-[#0286FF]";
   }
@@ -20,7 +21,7 @@ const getBgVariantStyle = (variant: ButtonProps["bgVariant"]) => {
 const getTextVariantStyle = (variant: ButtonProps["textVariant"]) => {
   switch (variant) {
     case "primary":
-      return "text-black";
+      return "text-[#282828] active:text-[#ffffff] ";
     case "secondary":
       return "text-gray-100";
     case "danger":
@@ -28,7 +29,7 @@ const getTextVariantStyle = (variant: ButtonProps["textVariant"]) => {
     case "success":
       return "text-green-100";
     default:
-      return "text-white";
+      return "text-white active:text-[#ffffff]";
   }
 };
 

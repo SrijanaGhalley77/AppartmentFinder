@@ -5,6 +5,7 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  TouchableOpacity,
 } from "react-native";
 import React from "react";
 import { useGetDataQuery } from "@/services/GetApiCall";
@@ -41,15 +42,19 @@ const ExploreCard = () => {
   }
 
   return (
-    <View className="flex-1 px-[28px]">
+    <View className="flex-1 px-[12px]">
       <Text className="text-xl font-bold mb-4">Explore</Text>
       <FlatList
         data={data.locations}
-        horizontal
-        // columnWrapperStyle={{ gap: 12, paddingHorizontal: 14, paddingTop: 8 }}
+        numColumns={2}
+        columnWrapperStyle={{ gap: 16 }}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View className="w-[128px] h-[50px] flex-row items-center bg-white mb-2 rounded-[6px] shadow-sm border border-gray-200">
+          <TouchableOpacity
+            onPress={() => {
+              console.log("Explore card pressed")
+          }}
+          >
             <ImageBackground
               source={{
                 uri:
@@ -57,13 +62,14 @@ const ExploreCard = () => {
                   "https://via.placeholder.com/100",
               }}
               resizeMode="cover"
-              className="w-full h-full p-0 m-0"
+              imageStyle={{borderRadius: 6}}
+              className="w-[178px] h-[50px] "
             >
-              <Text className="text-lg font-bold text-[#ffffff]">
+              <Text className="text-lg font-bold text-[#ffffff] self-center items-center">
                 {item.name}
               </Text>
             </ImageBackground>
-          </View>
+          </TouchableOpacity>
         )}
       />
     </View>

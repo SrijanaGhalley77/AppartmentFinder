@@ -6,20 +6,26 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
 import { List } from "react-native-paper";
-
+import { useAuth } from "@/context/Auth";
+import { Link, router } from "expo-router";
 
 function UserProfile() {
+  const { user, userType, profilePicture } = useAuth();
+
   return (
     <View style={styles.container}>
       <View style={styles.imgContainer}>
         <Image
-          source={require("../assets/images/user.webp")}
+          source={
+            profilePicture
+              ? { uri: profilePicture } // Ensure correct format
+              : require("@/assets/images/user.webp") // Default image
+          }
           style={styles.image}
         />
-        <Text style={styles.userName}>User Name</Text>
-        <Text>Rentor</Text>
+        <Text style={styles.userName}>{user?.displayName || "No User Name"}</Text>
+        <Text>{userType || "Undefined Type"}</Text>
       </View>
       <View style={{ gap: 16 }}>
         <List.Item
@@ -39,9 +45,13 @@ function UserProfile() {
             />
           )}
           right={(props) => (
-            <Pressable>
+            <Link href="./updateProfile">
+            <Pressable onPress={() => {
+              router.push("./updateProfile")
+            }}>
               <List.Icon {...props} icon="chevron-right" color="#D4D4D4" />
             </Pressable>
+              </Link>
           )}
         />
         <List.Item
@@ -155,36 +165,27 @@ export default UserProfile;
 const styles = StyleSheet.create({
   container: {
     marginTop: 16,
-    // backgroundColor: "#ffffff"
   },
   imgContainer: {
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 10
+    marginBottom: 10,
   },
   image: {
     width: 150,
     height: 150,
-    flexDirection: "row",
     borderRadius: 100,
   },
   userName: {
     fontSize: 16,
-    lineHeight: 24,
     color: "#262626",
     fontWeight: "bold",
-  },
-  userDesignation: {
-    fontSize: 14,
-    color: "#262626",
-    fontWeight: 400,
   },
   listRow: {
     flexDirection: "row",
     paddingHorizontal: 16,
     paddingVertical: 12,
     justifyContent: "space-between",
-    // backgroundColor: "#fff",
     alignItems: "center",
   },
   listIcon: {
@@ -194,5 +195,10 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",
+  },
+  listTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#262626",
   },
 });

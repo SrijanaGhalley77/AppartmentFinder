@@ -11,27 +11,27 @@ import {
   adaptNavigationTheme,
 } from "react-native-paper";
 import { Colors } from "@/constants/Colors";
-import { ActivityIndicator, useColorScheme, View } from "react-native";
+import {
+  ActivityIndicator,
+  TouchableOpacity,
+  useColorScheme,
+} from "react-native";
 import {
   DarkTheme as NavigationDarkTheme,
   DefaultTheme as NavigationDefaultTheme,
-  ThemeProvider,
 } from "@react-navigation/native";
 import merge from "deepmerge";
-import { Stack, useRouter, useSegments } from "expo-router";
-import { useEffect, useState } from "react";
-import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import { Stack, useRouter } from "expo-router";
+import { useEffect } from "react";
 
-// import { SessionProvider } from "@/context";
-import { Slot } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { AuthContextProvider } from "@/context/Auth";
 import { Provider } from "react-redux";
 import { store } from "@/redux/reduxwithts/store";
+import { Ionicons } from "@expo/vector-icons";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
-
 const CustomDarkTheme = { ...MD3DarkTheme, colors: Colors.dark };
 const CustomLightTheme = { ...MD3LightTheme, colors: Colors.light };
 
@@ -44,6 +44,7 @@ const CombinedDefaultTheme = merge(LightTheme, CustomLightTheme);
 const CombinedDarkTheme = merge(DarkTheme, CustomDarkTheme);
 
 export default function RootLayout() {
+  const router = useRouter();
   const colorScheme = useColorScheme();
 
   const paperTheme =
@@ -71,6 +72,31 @@ export default function RootLayout() {
             <Stack.Screen name="index" options={{ headerShown: false }} />
             <Stack.Screen name="(auth)" options={{ headerShown: false }} />
             <Stack.Screen name="(drawer)" />
+            <Stack.Screen
+              name="(modal)/filter"
+              options={{
+                headerShown: true,
+                presentation: "modal",
+                headerTitle: "Filter",
+                headerShadowVisible: false,
+                headerStyle: {
+                  backgroundColor: "#fff",
+                },
+                headerLeft: () => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      router.back();
+                    }}
+                  >
+                    <Ionicons
+                      name="close-outline"
+                      size={24}
+                      color={"#262626"}
+                    />
+                  </TouchableOpacity>
+                ),
+              }}
+            />
           </Stack>
         </PaperProvider>
       </AuthContextProvider>

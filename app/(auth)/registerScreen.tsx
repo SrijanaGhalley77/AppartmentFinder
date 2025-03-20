@@ -6,10 +6,15 @@ import CustomButton from "@/components/ui/customButton";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
 import { MaterialIcons } from "@expo/vector-icons";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
+
+const db = getFirestore();
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [userName, setUserName] = useState("");
+  const [userType, setUserType] = useState(""); // NEW FIELD
+  const [profilePicture, setProfilePicture] = useState(""); // NEW FIELD
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -25,7 +30,7 @@ const RegisterPage = () => {
     setIsConfirmPasswordVisible(!isConfirmPasswordVisible);
   };
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
     if (!email || !emailRegex.test(email)) {
@@ -45,21 +50,35 @@ const RegisterPage = () => {
       return;
     }
 
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        return updateProfile(userCredential.user, {
-          displayName: userName,
-        }).then(() => {
-          Alert.alert(
-            "Sign-Up Successful!",
-            `Welcome, ${userName}. Please log in.`,
-          );
-          router.navigate("/(auth)/loginScreen");
-        });
-      })
-      .catch((error) => {
-        Alert.alert("Sign-Up Failed!", error.message);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
+      const user = userCredential.user;
+
+      // Update Firebase Auth profile
+      await updateProfile(user, {
+        displayName: userName,
+        photoURL: profilePicture || "@/assets/images/user.webp", // Fallback image
       });
+
+      // Store userType and profilePicture in Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        userType: userType || "User", // Default role if not selected
+        profilePicture:
+          profilePicture || "https://example.com/default-avatar.png",
+      });
+
+      Alert.alert(
+        "Sign-Up Successful!",
+        `Welcome, ${userName}. Please log in.`,
+      );
+      router.navigate("/(auth)/loginScreen");
+    } catch (error: any ) {
+      Alert.alert("Sign-Up Failed!", error.message);
+    }
   };
 
   return (
@@ -87,6 +106,26 @@ const RegisterPage = () => {
           placeholder="Email"
           placeholderTextColor="#8c8c8c"
           keyboardType="email-address"
+          cursorColor="#525252"
+        />
+
+        {/* NEW: User Type Input */}
+        <TextInput
+          className="w-full h-12 px-3 text-gray-800 border-b border-gray-400"
+          value={userType}
+          onChangeText={setUserType}
+          placeholder="User Type (Admin, User, etc.)"
+          placeholderTextColor="#8c8c8c"
+          cursorColor="#525252"
+        />
+
+        {/* NEW: Profile Picture Input */}
+        <TextInput
+          className="w-full h-12 px-3 text-gray-800 border-b border-gray-400"
+          value={profilePicture}
+          onChangeText={setProfilePicture}
+          placeholder="Profile Picture URL"
+          placeholderTextColor="#8c8c8c"
           cursorColor="#525252"
         />
 
@@ -128,6 +167,7 @@ const RegisterPage = () => {
           </TouchableOpacity>
         </View>
       </View>
+
       <View className="w-full flex flex-row items-center justify-between m-0 p-0">
         <Checkbox.Item
           label="Agree to Terms and condition"
