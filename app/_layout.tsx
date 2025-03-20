@@ -1,9 +1,7 @@
 import "../gesture-handler";
+import "../global.css";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { StatusBar } from "expo-status-bar";
-import { useEffect } from "react";
 import "react-native-reanimated";
 import {
   MD3LightTheme as DefaultTheme,
@@ -13,14 +11,21 @@ import {
   adaptNavigationTheme,
 } from "react-native-paper";
 import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "react-native";
+import { ActivityIndicator, useColorScheme, View } from "react-native";
 import {
   DarkTheme as NavigationDarkTheme,
   DefaultTheme as NavigationDefaultTheme,
-  ThemeProvider
+  ThemeProvider,
 } from "@react-navigation/native";
 import merge from "deepmerge";
+import { Stack, useRouter, useSegments } from "expo-router";
+import { useEffect, useState } from "react";
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
+// import { SessionProvider } from "@/context";
+import { Slot } from "expo-router";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { AuthContextProvider } from "@/context/Auth";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -56,14 +61,19 @@ export default function RootLayout() {
     return null;
   }
 
+
   return (
-    <PaperProvider theme={paperTheme}>
-      {/* <ThemeProvider value={paperTheme}> */}
+    <AuthContextProvider>
+      <PaperProvider theme={paperTheme}>
         <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
           <Stack.Screen name="(drawer)" />
         </Stack>
-      {/* </ThemeProvider> */}
-    </PaperProvider>
+      </PaperProvider>
+    </AuthContextProvider>
+
+
   );
 }
 function useMaterial3Theme(): { theme: any } {

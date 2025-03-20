@@ -1,10 +1,11 @@
-import { ImageBackground, StyleSheet } from "react-native";
+import { ImageBackground, StyleSheet, View, Text } from "react-native";
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
-import { View, Text } from "react-native";
 import { DrawerBtn } from "@/components/ui/drawerOpnBtn";
 import SearchBar from "@/components/ui/searchBar";
 import AvatarIcon from "@/components/ui/avatar";
-import Category from "@/components/ui/categoryCard";
+import Category from "@/components/ui/categoryCard.old1";
+import Recent from "@/components/ui/recentCard";
+
 export default function homePage() {
   return (
     <SafeAreaProvider>
@@ -14,8 +15,8 @@ export default function homePage() {
           style={styles.imgBg}
         >
           <View
-            className="flex-1  items-center justify-center bg-blue"
             style={{
+              height: 50,
               flexDirection: "row",
               justifyContent: "space-between",
               paddingHorizontal: 8,
@@ -24,18 +25,16 @@ export default function homePage() {
             <DrawerBtn />
             <AvatarIcon />
           </View>
-
           <View>
             <Text
               style={{
                 paddingTop: 30,
                 paddingLeft: 20,
-                fontSize: 40,
-                lineHeight: 32,
+                fontSize: 32,
+                lineHeight: 42,
                 color: "#ffffff",
-                fontWeight: "bold",
+                fontWeight: "900",
                 textOverflow: "wrap",
-                // backgroundColor: "#000000a0",
               }}
             >
               Property Hub for all your needs
@@ -43,10 +42,15 @@ export default function homePage() {
             <SearchBar />
           </View>
         </ImageBackground>
-
-        <View style={{ gap: 8, flexDirection: "column" }}>
-          <Text style={styles.header}>Categories</Text>
-          <Category />
+        <View style={styles.cardContainer}>
+          <View>
+            <Text style={styles.header}>Categories</Text>
+            <Category />
+          </View>
+          <View>
+            <Text style={styles.header}>Recently added</Text>
+            <Recent />
+          </View>
         </View>
       </SafeAreaView>
     </SafeAreaProvider>
@@ -68,12 +72,15 @@ const styles = StyleSheet.create({
     height: 1,
     width: "80%",
   },
+  cardContainer: {
+    gap: 8,
+    // flexDirection: "column",
+    paddingTop: 54,
+  },
   header: {
-    paddingTop: 34,
     paddingLeft: 12,
-    fontSize: 28,
-    fontWeight: "500",
-    fontFamily: "",
+    fontSize: 20,
+    fontWeight: "600",
   },
   imgBg: {
     height: 200,
