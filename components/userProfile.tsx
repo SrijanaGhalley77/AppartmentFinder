@@ -9,9 +9,11 @@ import {
 import { List } from "react-native-paper";
 import { useAuth } from "@/context/Auth";
 import { Link, router } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
 
 function UserProfile() {
   const { user, userType, profilePicture } = useAuth();
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
@@ -45,13 +47,13 @@ function UserProfile() {
             />
           )}
           right={(props) => (
-            <Link href="./updateProfile">
-            <Pressable onPress={() => {
-              router.push("./updateProfile")
+            // <Link href={"/update-profile"}>
+             <Pressable onPress={() => {
+              navigation.navigate("/update-profile");
             }}>
               <List.Icon {...props} icon="chevron-right" color="#D4D4D4" />
-            </Pressable>
-              </Link>
+            </Pressable> 
+            
           )}
         />
         <List.Item

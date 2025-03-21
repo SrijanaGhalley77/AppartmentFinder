@@ -2,15 +2,15 @@ import { Tabs } from 'expo-router';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { TabBar } from '@/components/TabBar'
 
-export default function TabLayout() {
+ const TabLayout = () => {
   const colorScheme = useColorScheme();
 
   return (
     <Tabs
-      tabBar={(props) => <TabBar {...props} />}
+      // tabBar={(props) => <TabBar {...props} />}
       screenOptions={{
         tabBarActiveTintColor: 'blue',
-        tabBarShowLabel: false,
+        tabBarShowLabel: true,
         headerShown: false,
       }}
       >
@@ -32,13 +32,9 @@ export default function TabLayout() {
           title: 'Notification',
         }}
       />
-      <Tabs.Screen
-        name="user"
-        options={{
-          title: 'User',
-        }}
-      />
+
       
     </Tabs>
   );
 }
+ export default TabLayout

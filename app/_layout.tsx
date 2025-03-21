@@ -29,6 +29,7 @@ import { AuthContextProvider } from "@/context/Auth";
 import { Provider } from "react-redux";
 import { store } from "@/redux/reduxwithts/store";
 import { Ionicons } from "@expo/vector-icons";
+import UpdateProfilePage from "@/app/(drawer)/(tabs)/user-profile/updateProfile";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -97,6 +98,7 @@ export default function RootLayout() {
                 ),
               }}
             />
+            <Stack.Screen name="UpdateProfilePage" />
           </Stack>
         </PaperProvider>
       </AuthContextProvider>
