@@ -117,7 +117,7 @@ const Recent = ({ onApartmentPress = () => {} }: CategoryProps) => {
   return (
     <FlatList
       numColumns={2}
-      columnWrapperStyle={{ gap: 12, paddingHorizontal: 14, paddingTop: 8 }}
+      columnWrapperStyle={{ gap: 8, paddingHorizontal: 0, paddingTop: 8 }}
       contentContainerStyle={{
         gap: 0,
         paddingBottom: 12,

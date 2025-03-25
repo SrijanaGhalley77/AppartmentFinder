@@ -13,7 +13,12 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
             : options.title !== undefined
             ? options.title
             : route.name;
-
+        if (
+          ["user-profile/index", "user-profile/updateProfile"].includes(
+            route.name,
+          )
+        )
+          return null;
         const isFocused = state.index === index;
 
         const onPress = () => {
@@ -42,7 +47,7 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
             onLongPress={onLongPress}
             isFocused={isFocused}
             routeName={route.name}
-            color={isFocused ? "#6737ab7" : "#222"}
+            color={isFocused ? "#6737ab" : "#222"}
             label={label}
           />
         );
@@ -66,5 +71,5 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 10 },
     shadowRadius: 10,
     shadowOpacity: 0.1,
-  }
+  },
 });

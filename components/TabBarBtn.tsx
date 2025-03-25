@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet } from "react-native";
+import { Pressable, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useEffect } from "react";
 import { icon } from "@/constants/icon";
 import Animated, {
@@ -7,6 +7,7 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
+import { Feather } from "@expo/vector-icons";
 
 const TabBarBtn = ({
   onPress,
@@ -19,7 +20,7 @@ const TabBarBtn = ({
   onPress: Function;
   onLongPress: Function;
   isFocused: boolean;
-  routeName: string;
+  routeName: "index" | "notification" | "search" | "user"; 
   color: string;
   label: string;
 }) => {
@@ -54,15 +55,17 @@ const TabBarBtn = ({
   });
 
   return (
-    <Pressable
+    <TouchableOpacity
       onPress={onPress}
       onLongPress={onLongPress}
       style={styles.tabbarItem}
     >
       <Animated.View style={animatedIconStyle}>
-        {icon[routeName]({
-          color: isFocused ? "#6737ab7" : "#222",
-        })}
+        {icon[routeName as keyof typeof icon] ? (
+          icon[routeName as keyof typeof icon]({ color })
+        ) : (
+          <Feather name="codesandbox" color={color} />
+        )}
       </Animated.View>
       <Animated.Text
         style={[
@@ -72,7 +75,7 @@ const TabBarBtn = ({
       >
         {label}
       </Animated.Text>
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 

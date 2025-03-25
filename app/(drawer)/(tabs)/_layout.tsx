@@ -7,7 +7,7 @@ import { TabBar } from '@/components/TabBar'
 
   return (
     <Tabs
-      // tabBar={(props) => <TabBar {...props} />}
+      tabBar={(props) => <TabBar {...props} />}
       screenOptions={{
         tabBarActiveTintColor: 'blue',
         tabBarShowLabel: true,
@@ -20,6 +20,12 @@ import { TabBar } from '@/components/TabBar'
         title: 'Home',
         }}
       />
+        <Tabs.Screen
+          name="notification"
+          options={{
+            title: 'Notification',
+          }}
+        />
       <Tabs.Screen
         name="search"
         options={{
@@ -27,9 +33,9 @@ import { TabBar } from '@/components/TabBar'
         }}
       />
       <Tabs.Screen
-        name="notification"
+        name="user"
         options={{
-          title: 'Notification',
+          title: 'User',
         }}
       />
 
