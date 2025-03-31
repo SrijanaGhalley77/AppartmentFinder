@@ -1,48 +1,65 @@
-import { View, Text, Pressable } from 'react-native'
-import { Searchbar } from 'react-native-paper';
-import { useState } from 'react';
-import { Ionicons } from '@expo/vector-icons';
+import { View, Pressable, StyleProp, ViewStyle, TextStyle } from "react-native";
+import { Searchbar } from "react-native-paper";
+import { useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
+import { Link, router } from "expo-router";
 
+// Type definition for props
+interface SearchBarProps {
+  style?: StyleProp<ViewStyle>;
+  className?: string;
+  searchbarStyle?: StyleProp<ViewStyle & TextStyle>; // ✅ Fix here
+  iconColor?: string;
+  label?: string;
+  filterIconSize?: number;
+  filterIconStyle?: string;
+}
 
-const SearchBar = () => {
-    const [searchQuery, setSearchQuery ] = useState('');
+const SearchBar = ({
+  style,
+  className,
+  searchbarStyle,
+  iconColor,
+  label,
+  filterIconSize,
+  filterIconStyle,
+}: SearchBarProps) => {
+  const [searchQuery, setSearchQuery] = useState("");
+
   return (
     <View
-      style={{
-        width: 380,
-        height: 70,
-        flexDirection: "row",
-        gap: 8,
-        justifyContent: "center",
-        alignItems: "center",
-        alignSelf: "center",
-        borderRadius: 20,
-        backgroundColor: "#fafafa",
-        position: 'absolute',
-        top: 116,
-      }}
+      style={style}
+      className={`w-[380px] h-[70px] p-4 flex-row gap-[8px] justify-center items-center rounded-xl bg-[#fafafa] ${className}`}
     >
       <Searchbar
-        placeholder="Search"
+        placeholder={label ?? "Search here"}
         onChangeText={setSearchQuery}
         value={searchQuery}
         mode="bar"
-        style={{ width: 320, height: 50 }}
-      />
-      <Pressable
-        style={{
-          width: 40,
-          height: 40,
-          backgroundColor: "#FAFAFA",
-          borderRadius: 100,
-          alignItems: "center",
-          justifyContent: "center",
+        style={[
+          {
+            width: 300,
+            height: 50,
+            backgroundColor: "#eeeeee",
+            borderRadius: 6,
+            alignItems: "center",
+          },
+          searchbarStyle as ViewStyle,
+        ]}
+        inputStyle={{
+          color: "#262626",
         }}
-      >
-        <Ionicons name="options" size={24} color="#000" />
+        iconColor={iconColor ?? "#262626"}
+      />
+      <Link href={"/(modal)/filter"} asChild>
+      <Pressable
+        className={`w-[45px] h-[45px] bg-[#eeeeee] rounded-full items-center justify-center ${filterIconStyle}`}
+        >
+        <Ionicons name="options" size={filterIconSize ?? 26} color="#262626" />
       </Pressable>
+        </Link>
     </View>
   );
-}
+};
 
-export default SearchBar
+export default SearchBar;
